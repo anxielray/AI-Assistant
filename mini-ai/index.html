@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>VaDeRa AI - Chat</title>
+        <style>
+            body {
+                font-family: "Arial", sans-serif;
+                background-color: #121212;
+                color: #fff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+            #chat-container {
+                width: 100%;
+                max-width: 500px;
+                background: #1e1e1e;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                display: flex;
+                flex-direction: column;
+            }
+            #messages {
+                height: 400px;
+                overflow-y: auto;
+                padding: 15px;
+                display: flex;
+                flex-direction: column;
+                scroll-behavior: smooth;
+            }
+            .message {
+                max-width: 75%;
+                padding: 10px;
+                margin: 5px;
+                border-radius: 8px;
+                word-wrap: break-word;
+            }
+            .user {
+                align-self: flex-end;
+                background: #0078ff;
+                color: white;
+            }
+            .bot {
+                align-self: flex-start;
+                background: #555;
+                color: #f1f1f1;
+            }
+            #input-container {
+                display: flex;
+                border-top: 1px solid #333;
+                padding: 10px;
+                background: #222;
+            }
+            input {
+                flex: 1;
+                padding: 12px;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                background: #333;
+                color: #fff;
+                outline: none;
+                transition: background 0.3s ease-in-out;
+            }
+            input:focus {
+                background: #444;
+            }
+            button {
+                background: #0078ff;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                border-radius: 5px;
+                margin-left: 10px;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+            button:hover {
+                background: #0056b3;
+            }
+            .typing {
+                font-size: 12px;
+                color: #888;
+                margin-left: 5px;
+                display: none;
+                animation: blink 1s infinite;
+            }
+            @keyframes blink {
+                0% { opacity: 0.2; }
+                50% { opacity: 1; }
+                100% { opacity: 0.2; }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="chat-container">
+            <div id="messages"></div>
+            <div id="input-container">
+                <input
+                    type="text"
+                    id="input"
+                    placeholder="Type a message..."
+                    aria-label="Type a message"
+                />
+                <button id="send">Send</button>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const input = document.getElementById("input");
+                const sendButton = document.getElementById("send");
+                const messagesContainer = document.getElementById("messages");
+
+                function addMessage(text, sender) {
+                    const messageDiv = document.createElement("div");
+                    messageDiv.classList.add("message", sender);
+                    messageDiv.textContent = text;
+                    messagesContainer.appendChild(messageDiv);
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
+
+                function handleMessageSend() {
+                    const text = input.value.trim();
+                    if (text) {
+                        addMessage(text, "user");
+                        input.value = "";
+                        setTimeout(() => addMessage("Thinking...", "bot"), 500);
+                        setTimeout(() => addMessage("Hello! How can I help?", "bot"), 1500);
+                    }
+                }
+
+                sendButton.addEventListener("click", handleMessageSend);
+                input.addEventListener("keypress", (event) => {
+                    if (event.key === "Enter") {
+                        handleMessageSend();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
